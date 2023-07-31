@@ -64,9 +64,10 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
+function takimSkoru(){
+    return Math.floor(Math.random()*16)+10
 }
+console.log (takimSkoru());
 
 
 
@@ -86,10 +87,22 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
 }
 */ 
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+function macSonucu(callback,ceyrekSayisi){
+  let EvSahibi=0
+  let KonukTakim=0;
+  for (let i=1; i <= ceyrekSayisi ; i++) {
+  EvSahibi+=callback();
+  KonukTakim+=callback();
+  
+}
+ return {
+  EvSahibi:EvSahibi,
+  KonukTakim:KonukTakim,
+
+ }
 }
 
+console.log(macSonucu(takimSkoru,4))
 
 
 
@@ -109,10 +122,18 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function periyotSkoru(callback) {
+  return {
+    EvSahibi:callback(),
+    KonukTakim:callback(),
 
-}
+
+   };
+
+  }
+  
+console.log(periyotSkoru(takimSkoru));
+
 
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
@@ -146,10 +167,24 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
-}
+function skorTabelasi(cb_periyotSkoru,cb_takimSkoru,ceyrekSayisi) {
+  let sonuc = [];
+  let EvSahibi=0;
+  let KonukTakim=0;
 
+  for(let i=1;i<=ceyrekSayisi;i++){
+    const periyot=cb_periyotSkoru(cb_takimSkoru);
+    let metin = `${i}. Periyot: Ev Sahibi ${periyot.EvSahibi} - Konuk Takım ${periyot.KonukTakim}`
+    sonuc.push(metin);
+    EvSahibi += periyot.EvSahibi;
+    KonukTakim += periyot.KonukTakim;
+
+  }
+  let skor = ` Maç Sonucu: Ev Sahibi ${EvSahibi} - Konuk Takım ${KonukTakim}`
+  sonuc.push(skor);
+  return sonuc ;
+}
+console.log(skorTabelasi(periyotSkoru, takimSkoru, 4));
 
 
 
